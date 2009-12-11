@@ -39,10 +39,35 @@ public class SimpleTimeline extends BaseTimeline implements Serializable {
     }
 	
 	/**
-	 * Update the event index in the case that the event's time changed
+	 * Remove the specified event from the collection of events which will be returned by eventsInInterval.
+	 */
+	public void remove(Event event) {
+		final Time time = event.getTime();
+		if (eventsByTime.containsKey(time))
+			eventsByTime.get(time).remove(event);
+	}
+
+	/**
+	 * Update the event index in the case that the event's time changed.
+	 * 
 	 * XXX review: should this be the *same method* as notifyEventTimeChange?
+	 * 
+	 * @param oldTime
+	 *            The time at which the event *was* located. event.getTime()
+	 *            should be the new time.
 	 */
 	public void timeChanged(Event event, Time oldTime) {
+		if (!(    eventsByTime.containsKey(oldTime)
+		       && eventsByTime.get(oldTime).contains(event) )) {
+			/*
+			 * Assuming the event is not actually in the timeline. XXX it would
+			 * be more robust if we had events indexed by identity and we could
+			 * check that -- as it is this will screw up if we are given a bad
+			 * old-time.
+			 */
+			return;
+		}
+		
 		final Time newTime = event.getTime();
 		eventsByTime.get(oldTime).remove(event);
 		if (!eventsByTime.containsKey(newTime))

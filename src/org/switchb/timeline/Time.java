@@ -7,7 +7,9 @@ import java.util.Date;
 import javax.swing.text.DateFormatter;
 
 /** 
- * An immutable real-time value.
+ * An immutable wall-clock-time value.
+ * 
+ * For this prototype we do not consider issues of non-monotonic time.
  */
 public class Time implements Comparable<Time>, Serializable {
 	private final Date date;

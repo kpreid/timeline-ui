@@ -279,7 +279,7 @@ public class TimelinePanel extends JPanel {
         }
 
 		public boolean timelineChanged(Time earliest, Time latest) {
-			System.err.println("Handling change notification from " + timeline + ": " + earliest + " -to- " + latest);
+			//System.err.println("Handling change notification from " + timeline + ": " + earliest + " -to- " + latest);
 			try {
 				saveScroll();
 
@@ -292,7 +292,7 @@ public class TimelinePanel extends JPanel {
 				for (List<EventRecord> l : myEvents.values()) {
 					for (EventRecord er : new ArrayList<EventRecord>(l)) { // must copy to avoid deleting-while-iterating
 						if (er.getTimeline() == timeline && !tev.contains(er.getEvent())) {
-							System.err.println("Removing event not in timeline events: " + er.getEvent() + " -- tev is " + timelineEvents);
+							//System.err.println("Removing event not in timeline events: " + er.getEvent() + " -- tev is " + timelineEvents);
 							er.remove();
 						}
 					}
@@ -300,17 +300,15 @@ public class TimelinePanel extends JPanel {
 
 				// add events not previously seen, and update times of events
 				for (Event e : timelineEvents) {
-					System.err.println("\tfrom timeline: " + e);
+					//System.err.println("\tfrom timeline: " + e);
 					if (!eventRecords.containsKey(e)) {
-						System.err.println("\t\tactually adding");
+						//System.err.println("\t\tactually adding");
 						addEvent(timeline, e);
 					} else if (eventRecords.get(e).getTime() != e.getTime()) {
-						System.err.println("\t\tupdating time");
+						//System.err.println("\t\tupdating time");
 						eventRecords.get(e).updateTime();
 					}
 				}
-
-				//System.err.println("handling update " + earliest + " " + latest);
 
 			} finally {
 				restoreScroll();

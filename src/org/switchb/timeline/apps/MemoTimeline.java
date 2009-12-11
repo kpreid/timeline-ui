@@ -8,6 +8,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JTextField;
@@ -26,7 +28,7 @@ import org.switchb.timeline.TimelineListener;
 public class MemoTimeline implements Timeline {
 	SimpleTimeline memos = new SimpleTimeline();
 	
-	transient SimpleTimeline nowContainer = new SimpleTimeline();
+	private transient SimpleTimeline nowContainer = new SimpleTimeline();
 	{
 		nowContainer.add(new MemoInputEvent());
 	}
@@ -104,7 +106,12 @@ public class MemoTimeline implements Timeline {
 					updateNow();
 				}
 			});
-			return field;
+	        
+	        final Box box = new Box(BoxLayout.LINE_AXIS);
+	        box.add(new JLabel("Memo:"));
+	        box.add(field);
+	        
+			return box;
         }
 		
 	}
