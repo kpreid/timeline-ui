@@ -13,7 +13,6 @@ public class TimelineFrame extends JFrame {
 
 	public TimelineFrame() {
 		setTitle("Timeline Data");
-		//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		timelinePanel = new TimelinePanel();
 		setContentPane(timelinePanel);
@@ -28,8 +27,12 @@ public class TimelineFrame extends JFrame {
 	public void addTimeline(Timeline timeline) {
 		timelinePanel.addTimeline(timeline);
 		JMenu menu = timeline.makeMenu();
-		if (menu != null) 
+		if (menu != null) { 
+			// TODO: Should let the timeline do this rather than tinkering with what it gave us
+			menu.setBackground(timeline.getColor());
+
 			menuBar.add(menu);
+		}		
 	}
 	
 	/*public void removeTimeline(Timeline timeline) {

@@ -9,9 +9,9 @@ Each application has UI consisting of individual events (which application provi
 
 The implemented applications are:
 
-  - A "calendar": user-created/editable events at specified times, which are automatically saved to disk. Interface is by the menu bar and right-clicking on events to delete them.
+  - A "calendar": user-created/editable events at specified times, which are automatically saved to disk. Interface is by the menu bar to create events and right-clicking on events to edit or delete them. There are two calendars in the prototype; future work would be to add more.
 
-  - "Memos": Text may be entered in field always at the current time; upon pressing Enter the text is recorded as an uneditable event at the current time. Memos are not saved to disk.
+  - "Memos": Text may be entered in field always at the current time; upon pressing Enter the text is recorded as an uneditable event at the current time.
 
   - "Clock": an event always at the current time whose label is just a dash.
 
@@ -20,7 +20,9 @@ The implemented applications are:
 Bugs
 ----
 
-- Multiple events trying to be at the "current time", i.e. the memo field and clock, tend to hop around each other as they update at different times. My plan to fix this would be to add special handling for "now events" so that they may be  
+- Multiple events trying to be at the "current time", i.e. the memo field and clock, tend to hop around each other as they update at different times. My plan to fix this would be to add special handling for "now events" to the timeline panel so that they do not have to be updated on an arbitrary schedule by their timelines -- and "now" is a significant time for the UI anyway, so this seems reasonable.
+
+- No attempt is made to separate user interface code from data model code (model/view or model/view/controller) in this prototype.
 
 Code style
 ----------
@@ -28,8 +30,6 @@ Code style
 The following are deliberate choices.
 
 - Many fields are initialized in their declarations rather than the constructor. I do this whenever the initial value of the field does not depend in any way on the conditions under which the object is created.
-
-- No attempt is made to separate user interface code from data model code (model/view or model/view/controller) in this prototype.
 
 
 Original project proposal notes

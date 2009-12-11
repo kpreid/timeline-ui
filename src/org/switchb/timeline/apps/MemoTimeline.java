@@ -25,30 +25,35 @@ import org.switchb.timeline.TimelineListener;
 /**
  * Timeline which stores dated memos (lines of text) and provides a field to enter them.
  */
-public class MemoTimeline implements Timeline {
+@SuppressWarnings("serial")
+public class MemoTimeline implements Timeline, Serializable {
 	SimpleTimeline memos = new SimpleTimeline();
 	
-	private transient SimpleTimeline nowContainer = new SimpleTimeline();
-	{
-		nowContainer.add(new MemoInputEvent());
-	}
+	private transient SimpleTimeline nowContainer;
 	
 	public MemoTimeline() {
-	    // TODO Auto-generated constructor stub
     }
 	
 	@Override
 	public List<Event> eventsInInterval(Time earliest, Time latest) {
 	    List<Event> result = new ArrayList<Event>();
 	    result.addAll(memos.eventsInInterval(earliest, latest));
-	    result.addAll(nowContainer.eventsInInterval(earliest, latest));
+	    result.addAll(getNowContainer().eventsInInterval(earliest, latest));
 	    return result;
 	}
+
+	private SimpleTimeline getNowContainer() {
+	    if (nowContainer == null) {
+	    	nowContainer = new SimpleTimeline();
+			getNowContainer().add(new MemoInputEvent());
+	    }
+		return nowContainer;
+    }
 	
 	@Override
 	public void addListener(TimelineListener listener) {
 	    memos.addListener(listener);
-	    nowContainer.addListener(listener);
+	    getNowContainer().addListener(listener);
 	}
 
 	@Override

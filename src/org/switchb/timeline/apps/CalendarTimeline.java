@@ -26,9 +26,11 @@ import org.switchb.timeline.SimpleTimeline;
 import org.switchb.timeline.Time;
 
 public class CalendarTimeline extends SimpleTimeline {
+	
 	public CalendarTimeline() {
 		add(new CalendarEvent("[This calendar created]", Time.msFromNow(0)));
     }
+	
 	public JMenu makeMenu() {
 		JMenu menu = new JMenu("Calendar");
 

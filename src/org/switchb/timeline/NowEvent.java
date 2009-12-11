@@ -5,7 +5,13 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
-
+/**
+ * An event which updates itself to always be at the current time, within a
+ * second.
+ * 
+ * TODO: Rework this to be a special type of event understood by the timeline
+ * panel, so that there is no arbitrary 1-second granularity causing hopping.
+ */
 public abstract class NowEvent implements Event {
 
 	protected final Timeline timeline;

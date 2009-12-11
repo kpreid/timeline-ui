@@ -1,7 +1,5 @@
 package org.switchb.timeline;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import javax.swing.SwingUtilities;
@@ -35,9 +33,6 @@ public abstract class BaseTimeline implements Timeline {
 
 	/**
 	 * Convenience method for notifying of an event having changed its time.
-	 * 
-	 * @param oldTime
-	 * @param newTime
 	 */
 	protected void notifyEventTimeChange(Time oldTime, Time newTime) {
 		boolean forward = oldTime.compareTo(newTime) < 0;

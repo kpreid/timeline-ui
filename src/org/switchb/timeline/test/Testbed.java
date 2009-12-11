@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Date;
+import java.util.concurrent.Callable;
 
 import javax.swing.*;
 
@@ -21,7 +22,9 @@ import org.switchb.timeline.apps.MemoTimeline;
 
 public class Testbed {
 
-	static File calFile = new File("calendar.ser");
+	final static File calFile = new File("calendar.ser");
+	final static File cal2File = new File("calendar2.ser");
+	final static File memoFile = new File("memos.ser");
 
 	/**
 	 * @param args
@@ -31,49 +34,49 @@ public class Testbed {
 		TimelineFrame frame = new TimelineFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		frame.addTimeline(new TestTimeline());
-		
-		// Set up calendar, from file
-		CalendarTimeline cal = null;
-		try {
-            cal = (CalendarTimeline)new ObjectInputStream(new FileInputStream(calFile)).readObject();
-        } catch (FileNotFoundException e) {
-	            // do nothing;
-            } catch (IOException e) {
-	            System.err.println("Error in loading calendar data:");
-	            e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-	            System.err.println("Error in loading calendar data:");
-	            e.printStackTrace();
-            }
-		if (cal == null) {
-			cal = new CalendarTimeline();
-			cal.setColor(Color.getHSBColor(0.13f, 0.25f, 1));
-		}
+		// Set up calendar, from file if possible
+		final CalendarTimeline cal = loadOrCreate(calFile, new Callable<CalendarTimeline>() {
+			public CalendarTimeline call() {
+				CalendarTimeline newCal = new CalendarTimeline();
+				newCal.setColor(Color.getHSBColor(0.13f, 0.25f, 1));
+				return newCal;
+			}
+		});
 		frame.addTimeline(cal);
 		
+		final CalendarTimeline cal2 = loadOrCreate(cal2File, new Callable<CalendarTimeline>() {
+			public CalendarTimeline call() {
+				CalendarTimeline newCal = new CalendarTimeline();
+				newCal.setColor(Color.getHSBColor(0.40f, 0.25f, 1));
+				return newCal;
+			}
+		});
+		frame.addTimeline(cal2);
+		
+		// Memos, ditto
+		final MemoTimeline memos = loadOrCreate(memoFile, new Callable<MemoTimeline>() {
+			public MemoTimeline call() {
+				MemoTimeline memos = new MemoTimeline();
+				return memos;
+			}
+		});
+		frame.addTimeline(memos);
+		
 		// Arrange to save calendar
-		final CalendarTimeline calFinal = cal; // sigh
 		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
 			
 			/* NOTE: This is unsafe in two ways: if the serialization fails it will destroy the saved data, and it never saves except when the process exits. */
 			
 			public void run() {
-				try {
-	                new ObjectOutputStream(new FileOutputStream(calFile)).writeObject(calFinal);
-                } catch (FileNotFoundException e) {
-                	System.err.println("Error in saving calendar data:");
-	                e.printStackTrace();
-                } catch (IOException e) {
-                	calFile.delete();
-                	System.err.println("Error in saving calendar data:");
-	                e.printStackTrace();
-                }
+				saveTimeline(calFile, cal);
+				saveTimeline(cal2File, cal2);
+				saveTimeline(memoFile, memos);
 			}
 		}));
 		
+		// Non-saved timelines
+		frame.addTimeline(new TestTimeline());		
 		frame.addTimeline(new ClockTimeline());
-		frame.addTimeline(new MemoTimeline());
 		
 		// For testing timeline-change handling.
 		//p.addTimeline(new BlinkTimeline());
@@ -83,4 +86,41 @@ public class Testbed {
 		frame.setVisible(true);
 	}
 
+	@SuppressWarnings("unchecked")
+    private static <T> T loadOrCreate(File file, Callable<T> creator) {
+		T result = null;
+		try {
+			result = (T)new ObjectInputStream(new FileInputStream(file)).readObject();
+		} catch (FileNotFoundException e) {
+			// do nothing;
+		} catch (IOException e) {
+			System.err.println("Error in loading data " + file + ":");
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			System.err.println("Error in loading data " + file + ":");
+			e.printStackTrace();
+		}
+		if (result == null) {
+			try {
+	            result = creator.call();
+            } catch (Exception e) {
+	            // This shouldn't actually happen in this application, but Callable is declared to throw
+            	throw new RuntimeException(e);
+            }
+		}
+	    return result;
+    }
+
+	private static void saveTimeline(File file, Timeline object) {
+        try {
+            new ObjectOutputStream(new FileOutputStream(file)).writeObject(object);
+        } catch (FileNotFoundException e) {
+        	System.err.println("Error in saving data " + file + ":");
+            e.printStackTrace();
+        } catch (IOException e) {
+        	calFile.delete();
+        	System.err.println("Error in saving data " + file + ":");
+            e.printStackTrace();
+        }
+    }
 }

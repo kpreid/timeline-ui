@@ -3,10 +3,7 @@ package org.switchb.timeline;
 import java.awt.Color;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Random;
-import java.util.Set;
 import java.util.TreeMap;
 
 import javax.swing.JMenu;
@@ -15,6 +12,7 @@ import javax.swing.JMenu;
  * A generic timeline class which stores a finite collection of events (rather
  * than doing anything interesting in the way of lazy calculation).
  */
+@SuppressWarnings("serial")
 public class SimpleTimeline extends BaseTimeline implements Serializable {
 	
 	TreeMap<Time, List<Event>> eventsByTime = new TreeMap<Time, List<Event>>();
@@ -30,6 +28,9 @@ public class SimpleTimeline extends BaseTimeline implements Serializable {
 	    return events;
     }
 
+	/**
+	 * Add the specified event to the collection of events which will be returned by eventsInInterval.
+	 */
 	public void add(Event event) {
 		Time time = event.getTime();
 		if (!eventsByTime.containsKey(time))
