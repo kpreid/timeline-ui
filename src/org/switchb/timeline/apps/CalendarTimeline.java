@@ -4,7 +4,6 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.io.Serializable;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.WeakHashMap;
 
 import javax.swing.AbstractAction;
@@ -25,6 +24,7 @@ import org.switchb.timeline.Event;
 import org.switchb.timeline.SimpleTimeline;
 import org.switchb.timeline.Time;
 
+@SuppressWarnings("serial")
 public class CalendarTimeline extends SimpleTimeline {
 	
 	public CalendarTimeline() {
@@ -158,8 +158,7 @@ public class CalendarTimeline extends SimpleTimeline {
 	/**
 	 * Command to create a new event.
 	 */
-	@SuppressWarnings("serial")
-    public class AddAction extends AbstractAction {
+	public class AddAction extends AbstractAction {
 		public AddAction() {
 			super("Add Event");
 		}
@@ -178,8 +177,7 @@ public class CalendarTimeline extends SimpleTimeline {
 	/**
 	 * Command to edit an existing event.
 	 */
-	@SuppressWarnings("serial")
-    public class EditAction extends AbstractAction {
+	public class EditAction extends AbstractAction {
 		private final CalendarEvent event;
 
 		public EditAction(CalendarEvent event) {
@@ -200,8 +198,7 @@ public class CalendarTimeline extends SimpleTimeline {
 	/**
 	 * Command to delete an existing event.
 	 */
-	@SuppressWarnings("serial")
-    public class DeleteAction extends AbstractAction {
+	public class DeleteAction extends AbstractAction {
 		private final CalendarEvent event;
 
 		public DeleteAction(CalendarEvent event) {

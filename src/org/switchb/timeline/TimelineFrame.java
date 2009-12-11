@@ -4,8 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
-import org.switchb.timeline.test.TestTimeline;
-
+@SuppressWarnings("serial")
 public class TimelineFrame extends JFrame {
 	
 	private TimelinePanel timelinePanel;

@@ -2,20 +2,15 @@ package org.switchb.timeline.apps;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JMenu;
-import javax.swing.Timer;
 
 import org.switchb.timeline.NowEvent;
 import org.switchb.timeline.SimpleTimeline;
-import org.switchb.timeline.Time;
 import org.switchb.timeline.Timeline;
-import org.switchb.timeline.TimelineListener;
 
+@SuppressWarnings("serial")
 public class ClockTimeline extends SimpleTimeline implements Timeline {
 
 	private final ClockEvent event = new ClockEvent(this);

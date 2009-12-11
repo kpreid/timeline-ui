@@ -1,18 +1,14 @@
 package org.switchb.timeline.test;
 
 import java.awt.Component;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import javax.swing.JLabel;
 
-import org.switchb.timeline.BaseTimeline;
 import org.switchb.timeline.Event;
 import org.switchb.timeline.SimpleTimeline;
 import org.switchb.timeline.Time;
-import org.switchb.timeline.Timeline;
 
+@SuppressWarnings("serial")
 public class TestTimeline extends SimpleTimeline {
 
 	class TTEvent implements Event {

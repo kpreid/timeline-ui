@@ -8,14 +8,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Date;
 import java.util.concurrent.Callable;
 
-import javax.swing.*;
+import javax.swing.JFrame;
 
 import org.switchb.timeline.Timeline;
 import org.switchb.timeline.TimelineFrame;
-import org.switchb.timeline.TimelinePanel;
 import org.switchb.timeline.apps.CalendarTimeline;
 import org.switchb.timeline.apps.ClockTimeline;
 import org.switchb.timeline.apps.MemoTimeline;

@@ -14,7 +14,6 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JTextField;
 
-import org.switchb.timeline.BaseTimeline;
 import org.switchb.timeline.Event;
 import org.switchb.timeline.NowEvent;
 import org.switchb.timeline.SimpleTimeline;

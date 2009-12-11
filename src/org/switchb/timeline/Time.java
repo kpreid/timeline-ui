@@ -4,16 +4,14 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.Date;
 
-import javax.swing.text.DateFormatter;
-
 /** 
  * An immutable wall-clock-time value.
  * 
  * For this prototype we do not consider issues of non-monotonic time.
  */
+@SuppressWarnings("serial")
 public class Time implements Comparable<Time>, Serializable {
 	private final Date date;
-
 
 	public static Time msFromNow(int offset) {
 		Date d = new Date();
