@@ -15,7 +15,6 @@ import javax.swing.JFrame;
 import org.switchb.timeline.Timeline;
 import org.switchb.timeline.TimelineFrame;
 import org.switchb.timeline.apps.CalendarTimeline;
-import org.switchb.timeline.apps.ClockTimeline;
 import org.switchb.timeline.apps.MemoTimeline;
 
 public class Testbed {
