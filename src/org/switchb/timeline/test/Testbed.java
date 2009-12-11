@@ -74,7 +74,7 @@ public class Testbed {
 		
 		// Non-saved timelines
 		frame.addTimeline(new TestTimeline());		
-		frame.addTimeline(new ClockTimeline());
+		//frame.addTimeline(new ClockTimeline());
 		
 		// For testing timeline-change handling.
 		//p.addTimeline(new BlinkTimeline());

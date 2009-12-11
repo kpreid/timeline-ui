@@ -341,7 +341,7 @@ public class TimelinePanel extends JPanel {
 	    //System.err.println("restoring " + (timeToPosition(savedTime) + savedOffset) + " <= " + savedTime + "(" + timeToPosition(savedTime) + ") + " + savedOffset);
 	    scrollC.getViewport().setViewPosition(new Point(
 	       scrollC.getViewport().getViewPosition().x,
-	       timeToPosition(savedTime) - offsetForSaveScroll() + savedOffset));
+	       Math.max(0, timeToPosition(savedTime) - offsetForSaveScroll() + savedOffset)));
 	    
 	    savedOffset = -1;
     }

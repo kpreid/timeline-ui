@@ -13,7 +13,7 @@ The implemented applications are:
 
   - "Memos": Text may be entered in field always at the current time; upon pressing Enter the text is recorded as an uneditable event at the current time.
 
-  - "Clock": an event always at the current time whose label is just a dash.
+  - "Clock": an event always at the current time whose label is just a dash. In order to avoid the multiple-now-events bug described below, this is not shown in the demo application window.
 
   - Some random junk events to help exercise the time-series-layout code.
 
