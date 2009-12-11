@@ -46,6 +46,7 @@ public class SimpleTimeline extends BaseTimeline implements Serializable {
 		final Time time = event.getTime();
 		if (eventsByTime.containsKey(time))
 			eventsByTime.get(time).remove(event);
+		notifyListeners(time, time);
 	}
 
 	/**
