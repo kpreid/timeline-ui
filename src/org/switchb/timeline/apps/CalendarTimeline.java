@@ -10,7 +10,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
+import javax.swing.JTextField;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -50,7 +50,7 @@ public class CalendarTimeline extends SimpleTimeline {
 		/**
 		 * Components to be updated with our current text.
 		 */
-		transient private WeakHashMap<JLabel, Void> labels; 
+		transient private WeakHashMap<JTextField, Void> components; 
 
 	    public CalendarEvent(String text, Time time) {
 	    	if (text == null)
@@ -65,28 +65,33 @@ public class CalendarTimeline extends SimpleTimeline {
 
 	    @Override
 	    public Component makeComponent() {
-		    final JLabel label = new JLabel(text);
+		    final JTextField textC = new JTextField(text);
+			textC.setEditable(false); /*
+									 * Not editable because a lot of editable
+									 * components would be visual and tab-order
+									 * clutter. The dialog is used instead.
+									 */
 		    
-		    // Remember the label so we can update it when our text changes
-		    getLabels().put(label, null);
+		    // Remember the component so we can update it when our text changes
+		    getComponents().put(textC, null);
 		    
 		    JPopupMenu myMenu = new JPopupMenu();
 		    myMenu.add(new JMenuItem(new EditAction(this)));
 		    myMenu.add(new JMenuItem(new DeleteAction(this)));
 		    
-		    label.addMouseListener(new BasicEventMouseListener(myMenu));
+		    textC.addMouseListener(new BasicEventMouseListener(myMenu));
 		    
-		    return label;
+		    return textC;
 	    }
 
 		/**
-		 * Ensure that the transient labels table is available whether we were
+		 * Ensure that the transient components table is available whether we were
 		 * constructed or unserialized.
 		 */
-		private WeakHashMap<JLabel, Void> getLabels() {
-	        if (labels == null)
-	        	labels = new WeakHashMap<JLabel, Void>();
-	        return labels;
+		private WeakHashMap<JTextField, Void> getComponents() {
+	        if (components == null)
+	        	components = new WeakHashMap<JTextField, Void>();
+	        return components;
         }
 
 		@Override
@@ -94,6 +99,29 @@ public class CalendarTimeline extends SimpleTimeline {
 		    return time;
 	    }
 
+		public void setTime(Time newTime) {
+			if (newTime == null) 
+				throw new NullPointerException("Attempted to set a calendar event's time to null");
+			final Time oldTime = time;
+	        time = newTime;
+			timeChanged(this, oldTime);
+        }
+
+		public void setText(String text) {
+	    	if (text == null)
+	    		throw new NullPointerException("Text may not be null");
+	    	this.text = text;
+	        
+	    	// TODO: Should this be deferred?
+	    	for (JTextField c : getComponents().keySet()) {
+	    		c.setText(text);
+	    	}
+        }
+
+		public String getText() {
+	        return text;
+        }
+		
 		/**
 		 * Display a window to edit the event.
 		 * 
@@ -130,29 +158,6 @@ public class CalendarTimeline extends SimpleTimeline {
 				return false;
 			}
 		}
-
-		public void setTime(Time newTime) {
-			if (newTime == null) 
-				throw new NullPointerException("Attempted to set a calendar event's time to null");
-			final Time oldTime = time;
-	        time = newTime;
-			timeChanged(this, oldTime);
-        }
-
-		public void setText(String text) {
-	    	if (text == null)
-	    		throw new NullPointerException("Text may not be null");
-	    	this.text = text;
-	        
-	    	// TODO: Should this be deferred?
-	    	for (JLabel label : getLabels().keySet()) {
-	    		label.setText(text);
-	    	}
-        }
-
-		public String getText() {
-	        return text;
-        }
     }
 
 	/**
